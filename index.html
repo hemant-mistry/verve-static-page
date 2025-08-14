@@ -3,31 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verve - Architectural Project Management</title>
+    <title>Verve - Architectural Project Management (Themed)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --primary: #22b8f0; /* bright cyan from logo */
+        --primary-600: #0ea5d6;
+        --muted: #6b7280;
+        --card-bg: rgba(34, 184, 240, 0.06);
+        --glass: rgba(255, 255, 255, 0.6);
+        --header-height: 7rem; /* keep in sync with main's pt-28 */
+      }
+
       html {
         scroll-behavior: smooth;
       }
+
+      /* keep the page background solid so gradient doesn't bleed everywhere */
       body {
         font-family: "Inter", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background: #fbfdff;
+        color: #0f172a; /* slate-900 */
       }
+
+      /* fixed gradient layer at the top — only covers header + hero area */
+      .page-gradient {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        /* adjust height to cover header + hero area — tweak if you change hero sizing */
+        height: calc(50vh + 4rem);
+        pointer-events: none; /* let clicks pass through */
+        z-index: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(34, 184, 240, 0.12) 0%,
+          rgba(34, 184, 240, 0.06) 30%,
+          rgba(34, 184, 240, 0.02) 60%,
+          transparent 100%
+        );
+        background-position: top center;
+        background-size: 100% 160%;
+        background-repeat: no-repeat;
+      }
+
+      /* place main content above the gradient layer */
+      main {
+        position: relative;
+        z-index: 10;
+      }
+
       .feature-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 1.5rem;
+        width: 56px;
+        height: 56px;
+        margin-bottom: 1rem;
       }
-      /* Style for the mobile menu overlay */
+
+      /* Mobile menu overlay */
       #mobile-menu {
-        transition: opacity 0.3s ease-in-out;
+        transition: opacity 0.25s ease-in-out;
       }
-      /* Styles for scroll animation */
+
+      /* Scroll animation */
       .scroll-animate {
         opacity: 0;
         transform: translateY(30px);
@@ -37,29 +81,95 @@
         opacity: 1;
         transform: translateY(0);
       }
+
+      /* subtle card */
+      .card {
+        background: var(--card-bg);
+        border: 1px solid rgba(34, 184, 240, 0.12);
+        border-radius: 14px;
+      }
+
+      /* primary button focus ring to match logo */
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: var(--primary-600);
+      }
+
+      /* small helpers for icons using currentColor */
+      .icon-stroke {
+        stroke: var(--primary);
+      }
+
+      /* header backdrop - slightly translucent so gradient reads subtly under it */
+      header {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+        z-index: 20; /* keep header above gradient */
+      }
+
+      /* hero uses transparent background so the top gradient shows through */
+      .section-hero {
+        /* keep your chosen hero sizing */
+        height: calc(50vh - 4rem);
+        min-height: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: transparent;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        /* keep site light to match the logo, so no dark mode swap */
+      }
     </style>
   </head>
-  <body class="bg-black text-white">
+  <body>
+    <!-- top gradient layer (behind content) -->
+    <div class="page-gradient" aria-hidden="true"></div>
+
     <!-- Header -->
-    <header
-      class="fixed top-0 left-0 right-0 z-20 bg-white text-black shadow-md"
-    >
+    <header class="fixed top-0 left-0 right-0 z-20 shadow-md">
       <div
         class="container mx-auto px-6 py-4 flex justify-between items-center"
       >
-        <h1 class="text-2xl font-bold"><a href="#hero">Verve</a></h1>
+        <a href="#hero" class="flex items-center gap-4">
+          <div class="logo-frame">
+            <img
+              src="verve-logo.jpg"
+              alt="Verve logo"
+              class="w-10 h-10 object-contain"
+            />
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold leading-none">Verve</h1>
+            <p class="text-sm text-[var(--muted)] -mt-1">
+              Architectural Project Management
+            </p>
+          </div>
+        </a>
 
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex space-x-8">
-          <a href="#about" class="text-gray-600 hover:text-black">About</a>
-          <a href="#features" class="text-gray-600 hover:text-black"
+          <a href="#about" class="text-slate-700 hover:text-slate-900">About</a>
+          <a href="#features" class="text-slate-700 hover:text-slate-900"
             >Features</a
           >
-          <a href="#contact" class="text-gray-600 hover:text-black">Contact</a>
+          <a href="#contact" class="text-slate-700 hover:text-slate-900"
+            >Contact</a
+          >
         </nav>
 
         <!-- Mobile Menu Button -->
-        <button id="mobile-menu-button" class="md:hidden z-30">
+        <button
+          id="mobile-menu-button"
+          class="md:hidden z-30 p-2 rounded-md border border-transparent hover:border-[var(--primary)]"
+        >
           <svg
             class="w-6 h-6"
             fill="none"
@@ -79,12 +189,9 @@
     </header>
 
     <!-- Mobile Menu Overlay -->
-    <div
-      id="mobile-menu"
-      class="hidden fixed inset-0 bg-black bg-opacity-95 z-20 md:hidden"
-    >
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-20 md:hidden">
       <nav
-        class="flex flex-col items-center justify-center h-full text-white text-2xl space-y-8"
+        class="flex flex-col items-center justify-center h-full text-[var(--primary)] text-2xl space-y-8"
       >
         <a href="#about" class="mobile-menu-link">About</a>
         <a href="#features" class="mobile-menu-link">Features</a>
@@ -92,82 +199,97 @@
       </nav>
     </div>
 
-    <main>
+    <main class="pt-28">
       <!-- Hero Section -->
       <section
         id="hero"
-        class="h-screen flex flex-col justify-center items-center text-center bg-black"
+        class="section-hero scroll-animate visible"
+        style="background: transparent;"
       >
-        <div class="scroll-animate visible">
-          <h1 class="text-6xl md:text-8xl font-bold mb-4">Verve</h1>
-          <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
-            Centralize Planning. Accelerate Delivery. Simplify Collaboration.
+        <div class="max-w-4xl px-6">
+          <h1 class="text-5xl md:text-7xl font-extrabold mb-4 text-slate-900">
+            Verve
+          </h1>
+          <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-slate-700">
+            Centralize Planning. Accelerate Delivery. Simplify Collaboration —
+            now in a modern, architecture-focused interface inspired by our
+            visual identity.
           </p>
-          <a
-            href="#about"
-            class="inline-block bg-transparent border border-white text-white font-semibold py-2 px-6 rounded-full hover:bg-white hover:text-black transition-colors duration-300"
-          >
-            Discover More
-          </a>
+          <div class="flex gap-4 justify-center">
+            <a
+              href="#about"
+              class="inline-flex items-center gap-3 btn-primary font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                ></path>
+              </svg>
+              Get Started
+            </a>
+            <a
+              href="#features"
+              class="inline-flex items-center gap-3 border border-[var(--primary)] text-[var(--primary)] font-semibold py-3 px-6 rounded-full hover:bg-[var(--card-bg)] transition"
+            >
+              Explore Features
+            </a>
+          </div>
         </div>
       </section>
 
       <!-- About Section -->
-      <section
-        id="about"
-        class="bg-gray-100 text-black py-20 md:py-32 scroll-animate"
-      >
+      <section id="about" class="py-20 md:py-32 scroll-animate">
         <div
           class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center"
         >
           <div>
-            <h2 class="text-4xl font-bold mb-6">About Verve</h2>
-            <p class="text-lg mb-8 leading-relaxed">
-              At Verve, we specialize in empowering Architecture firms with
-              intelligent project management solutions that drive clarity,
-              control, and collaboration across every stage of the project
-              lifecycle. Our platform is purpose-built to eliminate operational
-              inefficiencies, simplify stakeholder coordination, and enable
-              teams to deliver high-impact results on time and on budget.
+            <h2 class="text-4xl font-bold mb-6 text-slate-900">About Verve</h2>
+            <p class="text-lg mb-8 leading-relaxed text-slate-700">
+              At Verve, we empower architecture firms with elegant project
+              management tools that match the clarity and precision of great
+              design. Our visual language reflects clean geometry, generous
+              white space, and the bright cyan accent from our logo to guide
+              attention where it matters.
             </p>
             <a
               href="#features"
-              class="inline-block bg-black text-white font-semibold py-3 px-8 rounded-full hover:bg-gray-800 transition-colors duration-300"
+              class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300"
+              >Learn More</a
             >
-              Learn More
-            </a>
           </div>
-          <div class="
-          w-full md:w-3/4       
-          max-h-64 md:max-h-[500px]
-          rounded-lg
-          shadow-lg
-          overflow-hidden
-          border border-black
-          mx-auto">
-            
-              <img
-                src="arch.avif"
-                alt="Modern Architecture"
-                class="w-full h-full object-cover"
-              />
-            </div>
+
+          <div
+            class="w-full md:w-3/4 max-h-64 md:max-h-[500px] rounded-lg shadow-lg overflow-hidden border border-slate-100 mx-auto card"
+          >
+            <img
+              src="arch.avif"
+              alt="Modern Architecture"
+              class="w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
 
       <!-- Features Section -->
-      <section
-        id="features"
-        class="bg-black text-white py-20 md:py-32 scroll-animate"
-      >
+      <section id="features" class="py-20 md:py-32 scroll-animate">
         <div class="container mx-auto px-6">
-          <h2 class="text-4xl font-bold text-center mb-16">Features</h2>
+          <h2 class="text-4xl font-bold text-center mb-16 text-slate-900">
+            Features
+          </h2>
           <div
             class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 text-center"
           >
             <!-- Feature 1 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -177,24 +299,26 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
+                    stroke-width="1.5"
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
                 Lightning-Fast Project Setup
               </h3>
-              <p class="text-gray-400">
+              <p class="text-slate-600">
                 Spin up new projects in minutes. Define scope, budgets, teams,
                 and timelines with an intuitive setup wizard designed for speed
                 and accuracy.
               </p>
             </div>
+
             <!-- Feature 2 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -204,22 +328,26 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    stroke-width="1.5"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">Dynamic Team Management</h3>
-              <p class="text-gray-400">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
+                Dynamic Team Management
+              </h3>
+              <p class="text-slate-600">
                 Add or remove architects, engineers, vendors, and subcontractors
-                on the fly. Assign roles, update permissions, and keep every
-                stakeholder aligned in real time.
+                on the fly. Assign roles, update permissions, and keep
+                stakeholders aligned in real time.
               </p>
             </div>
+
             <!-- Feature 3 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -229,24 +357,25 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
+                    stroke-width="1.5"
                     d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2z"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
                 Real-Time Milestone Tracking
               </h3>
-              <p class="text-gray-400">
+              <p class="text-slate-600">
                 Stay on top of deadlines, deliverables, and budgets with visual
-                progress dashboards and automated status alerts. Update tasks
-                midstream without disruption.
+                progress dashboards and automated status alerts.
               </p>
             </div>
+
             <!-- Feature 4 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -256,24 +385,25 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
+                    stroke-width="1.5"
                     d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H17z"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
                 Role-Based Collaboration Hubs
               </h3>
-              <p class="text-gray-400">
+              <p class="text-slate-600">
                 Create structured communication spaces for architects,
-                engineers, and vendors. Keep discussions, decisions, and files
-                tied to specific tasks—no more digging through email threads.
+                engineers, and vendors. Keep discussions tied to specific tasks.
               </p>
             </div>
+
             <!-- Feature 5 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -283,24 +413,25 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
+                    stroke-width="1.5"
                     d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
                 Centralized Document Repository
               </h3>
-              <p class="text-gray-400">
+              <p class="text-slate-600">
                 Upload and manage blueprints, drawings, photos, and reports in
-                one secure, searchable location. Full version control ensures
-                compliance and easy rollbacks.
+                one secure, searchable location. Full version control included.
               </p>
             </div>
+
             <!-- Feature 6 -->
-            <div>
+            <div class="px-6 py-8 card">
               <div class="flex justify-center">
                 <svg
                   class="feature-icon"
@@ -310,20 +441,20 @@
                   stroke="currentColor"
                 >
                   <path
+                    class="icon-stroke"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="1"
+                    stroke-width="1.5"
                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                   />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3">
+              <h3 class="text-xl font-bold mb-3 text-slate-900">
                 Financial Control & Budget Oversight
               </h3>
-              <p class="text-gray-400">
+              <p class="text-slate-600">
                 Gain full visibility into project finances. Set budgets, track
-                costs, and forecast with confidence—ensuring every dollar is
-                accounted for from planning to completion.
+                costs, and forecast with confidence.
               </p>
             </div>
           </div>
@@ -331,45 +462,39 @@
       </section>
 
       <!-- CTA Section -->
-      <section
-        id="contact"
-        class="bg-gray-100 text-black py-20 md:py-32 scroll-animate"
-      >
+      <section id="contact" class="py-20 md:py-32 scroll-animate">
         <div class="container mx-auto px-6 text-center max-w-4xl">
-          <h2 class="text-4xl font-bold mb-6">
+          <h2 class="text-4xl font-bold mb-6 text-slate-900">
             Ready to Take Control of Your Projects?
           </h2>
-          <p class="text-lg mb-8 leading-relaxed">
+          <p class="text-lg mb-8 leading-relaxed text-slate-700">
             Whether you're designing skyscrapers or managing complex
             infrastructure, Verve gives your team the clarity, speed, and
-            control to deliver every project with confidence. No more scattered
-            tools, missed deadlines, or budget surprises—just one powerful
-            platform tailored for your firm's success.
+            control to deliver every project with confidence.
           </p>
           <a
             href="#"
-            class="inline-block bg-black text-white font-semibold py-3 px-8 rounded-full hover:bg-gray-800 transition-colors duration-300"
+            class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300"
+            >Connect with us</a
           >
-            Connect with us
-          </a>
         </div>
       </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-black text-white py-12">
+    <footer class="py-12">
       <div class="container mx-auto px-6">
         <div class="md:flex md:justify-between md:items-center">
           <div class="mb-8 md:mb-0">
             <h2 class="text-3xl font-bold">Verve</h2>
           </div>
-          <div class="flex space-x-8 text-gray-400">
-            <a href="#" class="hover:text-white">About Us</a>
-            <a href="#" class="hover:text-white">Privacy Policy</a>
+          <div class="flex space-x-8 text-slate-500">
+            <a href="#" class="hover:text-slate-800">About Us</a>
+            <a href="#" class="hover:text-slate-800">Privacy Policy</a>
           </div>
         </div>
         <div
-          class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm"
+          class="mt-8 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm"
         >
           <p>&copy; 2025 Verve. All rights reserved</p>
         </div>
@@ -388,7 +513,6 @@
       }
 
       mobileMenuButton.addEventListener("click", toggleMenu);
-
       mobileMenuLinks.forEach((link) => {
         link.addEventListener("click", toggleMenu);
       });
@@ -396,16 +520,13 @@
       // --- Smooth Scroll for ALL anchor links ---
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (!href || href === "#") return; // default skip
           e.preventDefault();
-          const targetId = this.getAttribute("href");
-          const targetElement = document.querySelector(targetId);
+          const targetElement = document.querySelector(href);
           if (targetElement) {
-            // Temporarily remove scroll-padding for accurate scroll position
             document.documentElement.style.scrollPaddingTop = "0px";
-            targetElement.scrollIntoView({
-              behavior: "smooth",
-            });
-            // Restore scroll-padding after a short delay
+            targetElement.scrollIntoView({ behavior: "smooth" });
             setTimeout(() => {
               document.documentElement.style.scrollPaddingTop = "";
             }, 1000);
@@ -420,8 +541,7 @@
         const elementTop = el.getBoundingClientRect().top;
         return (
           elementTop <=
-          (window.innerHeight || document.documentElement.clientHeight) /
-            dividend
+          (window.innerHeight || document.documentElement.clientHeight) / dividend
         );
       };
 
@@ -431,17 +551,11 @@
 
       const handleScrollAnimation = () => {
         scrollElements.forEach((el) => {
-          if (elementInView(el, 1.25)) {
-            displayScrollElement(el);
-          }
+          if (elementInView(el, 1.25)) displayScrollElement(el);
         });
       };
 
-      window.addEventListener("scroll", () => {
-        handleScrollAnimation();
-      });
-
-      // Initial check on load
+      window.addEventListener("scroll", handleScrollAnimation);
       handleScrollAnimation();
     </script>
   </body>
