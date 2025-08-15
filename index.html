@@ -240,10 +240,10 @@
     <main class="pt-28">
       <!-- Hero Section -->
       <section id="hero" class="section-hero scroll-animate visible" style="background: transparent">
-        <div class="max-w-4xl px-6">
            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 text-slate-900">
             Verve
           </h1>
+        <div class="max-w-4xl px-6">
           <p class="text-base md:text-lg max-w-2xl mx-auto mb-8 text-slate-700 text-center">
             Centralize Planning. Accelerate Delivery. Simplify Collaboration
           </p>
@@ -405,7 +405,10 @@
             infrastructure, Verve gives your team the clarity, speed, and
             control to deliver every project with confidence.
           </p>
-          <a href="#" class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300">Connect with us</a>
+          <!-- Updated: mailto link opens user's email client with recipient prefilled -->
+          <a href="mailto:verve.co.in@gmail.com" class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300" aria-label="Connect with us via email">
+            Connect with us
+          </a>
         </div>
       </section>
     </main>
