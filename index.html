@@ -3,12 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verve - Architectural Project Management (Themed)</title>
+    <title>Verve - Architectural Project Management</title>
+
+    <!-- Tailwind (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Preconnect & Google Fonts: Inter (UI) + Poppins (Headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
       rel="stylesheet"
     />
+
     <style>
       :root {
         --primary: #22b8f0; /* bright cyan from logo */
@@ -17,19 +24,60 @@
         --card-bg: rgba(34, 184, 240, 0.06);
         --glass: rgba(255, 255, 255, 0.6);
         --header-height: 7rem; /* keep in sync with main's pt-28 */
+
+        /* Font system */
+        --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        --font-heading: "Poppins", var(--font-sans);
       }
 
+      /* Global text rendering & scroll */
       html {
         scroll-behavior: smooth;
-      }
-
-      /* keep the page background solid so gradient doesn't bleed everywhere */
-      body {
-        font-family: "Inter", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      body {
+        font-family: var(--font-sans);
         background: #fbfdff;
         color: #0f172a; /* slate-900 */
+        margin: 0;
+      }
+
+      /* Headings: Poppins for modern SaaS tone */
+      h1,
+      h2,
+      h3,
+      .logo h1 {
+        font-family: var(--font-heading);
+        letter-spacing: -0.01em;
+        margin: 0;
+        color: #0f172a;
+      }
+
+      /* Consistent weights */
+      h1 {
+        font-weight: 700;
+      }
+      h2 {
+        font-weight: 600;
+      }
+      h3 {
+        font-weight: 600;
+      }
+
+      /* Line-height tuning */
+      h1,
+      h2,
+      h3 {
+        line-height: 1.05;
+      }
+      p,
+      a,
+      li {
+        line-height: 1.6;
       }
 
       /* fixed gradient layer at the top — only covers header + hero area */
@@ -93,6 +141,8 @@
       .btn-primary {
         background: var(--primary);
         color: white;
+        font-family: var(--font-heading);
+        font-weight: 600;
       }
       .btn-primary:hover {
         background: var(--primary-600);
@@ -124,65 +174,55 @@
         background: transparent;
       }
 
+      /* Logo styling: slightly tighter, bold, and aligned with heading font */
+      .logo-frame img {
+        display: block;
+      }
+      .logo h1 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.1rem;
+        line-height: 1;
+        margin: 0;
+      }
+
       @media (prefers-color-scheme: dark) {
         /* keep site light to match the logo, so no dark mode swap */
       }
     </style>
   </head>
+
   <body>
     <!-- top gradient layer (behind content) -->
     <div class="page-gradient" aria-hidden="true"></div>
 
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-20 shadow-md">
-      <div
-        class="container mx-auto px-6 py-4 flex justify-between items-center"
-      >
+      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#hero" class="flex items-center gap-4">
           <div class="logo-frame">
-            <img
-              src="verve-logo.jpg"
-              alt="Verve logo"
-              class="w-10 h-10 object-contain"
-            />
+            <img src="verve-logo.jpg" alt="Verve logo" class="w-10 h-10 object-contain" />
           </div>
-          <div>
+          <div class="logo">
             <h1 class="text-2xl font-bold leading-none">Verve</h1>
-            <p class="text-sm text-[var(--muted)] -mt-1">
-              Architectural Project Management
-            </p>
           </div>
         </a>
 
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex space-x-8">
           <a href="#about" class="text-slate-700 hover:text-slate-900">About</a>
-          <a href="#features" class="text-slate-700 hover:text-slate-900"
-            >Features</a
-          >
-          <a href="#contact" class="text-slate-700 hover:text-slate-900"
-            >Contact</a
-          >
+          <a href="#features" class="text-slate-700 hover:text-slate-900">Features</a>
+          <a href="#contact" class="text-slate-700 hover:text-slate-900">Contact</a>
         </nav>
 
         <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-button"
           class="md:hidden z-30 p-2 rounded-md border border-transparent hover:border-[var(--primary)]"
+          aria-label="Open mobile menu"
         >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
           </svg>
         </button>
       </div>
@@ -190,9 +230,7 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-20 md:hidden">
-      <nav
-        class="flex flex-col items-center justify-center h-full text-[var(--primary)] text-2xl space-y-8"
-      >
+      <nav class="flex flex-col items-center justify-center h-full text-[var(--primary)] text-2xl space-y-8">
         <a href="#about" class="mobile-menu-link">About</a>
         <a href="#features" class="mobile-menu-link">Features</a>
         <a href="#contact" class="mobile-menu-link">Contact</a>
@@ -201,46 +239,38 @@
 
     <main class="pt-28">
       <!-- Hero Section -->
-      <section
-        id="hero"
-        class="section-hero scroll-animate visible"
-        style="background: transparent;"
-      >
+      <section id="hero" class="section-hero scroll-animate visible" style="background: transparent">
         <div class="max-w-4xl px-6">
-          <h1 class="text-5xl md:text-7xl font-extrabold mb-4 text-slate-900">
-            Verve
-          </h1>
-          <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-slate-700">
+          <p class="text-base md:text-lg max-w-2xl mx-auto mb-8 text-slate-700 text-center">
             Centralize Planning. Accelerate Delivery. Simplify Collaboration —
             now in a modern, architecture-focused interface inspired by our
             visual identity.
           </p>
-          <div class="flex gap-4 justify-center">
+
+          <!-- Responsive buttons: stacked on mobile, inline on sm+ -->
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+            <!-- Primary (full width on mobile) -->
             <a
-              href="#about"
-              class="inline-flex items-center gap-3 btn-primary font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition"
+              href="#contact"
+              class="inline-flex w-full sm:w-auto justify-center items-center gap-3 btn-primary font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition h-12"
+              style="min-width: 160px"
+              aria-label="Get Started"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                ></path>
+              <!-- icon hidden on mobile to reduce clutter -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden sm:inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
-              Get Started
+              <span>Get Started</span>
             </a>
+
+            <!-- Secondary (outline) -->
             <a
               href="#features"
-              class="inline-flex items-center gap-3 border border-[var(--primary)] text-[var(--primary)] font-semibold py-3 px-6 rounded-full hover:bg-[var(--card-bg)] transition"
+              class="inline-flex w-full sm:w-auto justify-center items-center gap-3 border border-[var(--primary)] text-[var(--primary)] font-semibold py-3 px-6 rounded-full hover:bg-[var(--card-bg)] transition h-12"
+              style="min-width: 160px"
+              aria-label="Explore Features"
             >
-              Explore Features
+              <span>Explore more</span>
             </a>
           </div>
         </div>
@@ -248,9 +278,7 @@
 
       <!-- About Section -->
       <section id="about" class="py-20 md:py-32 scroll-animate">
-        <div
-          class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center"
-        >
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 class="text-4xl font-bold mb-6 text-slate-900">About Verve</h2>
             <p class="text-lg mb-8 leading-relaxed text-slate-700">
@@ -267,14 +295,8 @@
             >
           </div>
 
-          <div
-            class="w-full md:w-3/4 max-h-64 md:max-h-[500px] rounded-lg shadow-lg overflow-hidden border border-slate-100 mx-auto card"
-          >
-            <img
-              src="arch.avif"
-              alt="Modern Architecture"
-              class="w-full h-full object-cover"
-            />
+          <div class="w-full md:w-3/4 max-h-64 md:max-h-[500px] rounded-lg shadow-lg overflow-hidden border border-slate-100 mx-auto card">
+            <img src="arch.avif" alt="Modern Architecture" class="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -282,34 +304,16 @@
       <!-- Features Section -->
       <section id="features" class="py-20 md:py-32 scroll-animate">
         <div class="container mx-auto px-6">
-          <h2 class="text-4xl font-bold text-center mb-16 text-slate-900">
-            Features
-          </h2>
-          <div
-            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 text-center"
-          >
+          <h2 class="text-4xl font-bold text-center mb-16 text-slate-900">Features</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 text-center">
             <!-- Feature 1 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Lightning-Fast Project Setup
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Lightning-Fast Project Setup</h3>
               <p class="text-slate-600">
                 Spin up new projects in minutes. Define scope, budgets, teams,
                 and timelines with an intuitive setup wizard designed for speed
@@ -320,25 +324,11 @@
             <!-- Feature 2 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Dynamic Team Management
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Dynamic Team Management</h3>
               <p class="text-slate-600">
                 Add or remove architects, engineers, vendors, and subcontractors
                 on the fly. Assign roles, update permissions, and keep
@@ -349,25 +339,11 @@
             <!-- Feature 3 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2z"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Real-Time Milestone Tracking
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Real-Time Milestone Tracking</h3>
               <p class="text-slate-600">
                 Stay on top of deadlines, deliverables, and budgets with visual
                 progress dashboards and automated status alerts.
@@ -377,25 +353,11 @@
             <!-- Feature 4 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H17z"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H17z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Role-Based Collaboration Hubs
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Role-Based Collaboration Hubs</h3>
               <p class="text-slate-600">
                 Create structured communication spaces for architects,
                 engineers, and vendors. Keep discussions tied to specific tasks.
@@ -405,25 +367,11 @@
             <!-- Feature 5 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Centralized Document Repository
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Centralized Document Repository</h3>
               <p class="text-slate-600">
                 Upload and manage blueprints, drawings, photos, and reports in
                 one secure, searchable location. Full version control included.
@@ -433,25 +381,11 @@
             <!-- Feature 6 -->
             <div class="px-6 py-8 card">
               <div class="flex justify-center">
-                <svg
-                  class="feature-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    class="icon-stroke"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
+                <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path class="icon-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h3 class="text-xl font-bold mb-3 text-slate-900">
-                Financial Control & Budget Oversight
-              </h3>
+              <h3 class="text-xl font-bold mb-3 text-slate-900">Financial Control & Budget Oversight</h3>
               <p class="text-slate-600">
                 Gain full visibility into project finances. Set budgets, track
                 costs, and forecast with confidence.
@@ -464,19 +398,13 @@
       <!-- CTA Section -->
       <section id="contact" class="py-20 md:py-32 scroll-animate">
         <div class="container mx-auto px-6 text-center max-w-4xl">
-          <h2 class="text-4xl font-bold mb-6 text-slate-900">
-            Ready to Take Control of Your Projects?
-          </h2>
+          <h2 class="text-4xl font-bold mb-6 text-slate-900">Ready to Take Control of Your Projects?</h2>
           <p class="text-lg mb-8 leading-relaxed text-slate-700">
             Whether you're designing skyscrapers or managing complex
             infrastructure, Verve gives your team the clarity, speed, and
             control to deliver every project with confidence.
           </p>
-          <a
-            href="#"
-            class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300"
-            >Connect with us</a
-          >
+          <a href="#" class="inline-block bg-[var(--primary)] text-white font-semibold py-3 px-8 rounded-full hover:bg-[var(--primary-600)] transition-colors duration-300">Connect with us</a>
         </div>
       </section>
     </main>
@@ -489,13 +417,11 @@
             <h2 class="text-3xl font-bold">Verve</h2>
           </div>
           <div class="flex space-x-8 text-slate-500">
-            <a href="#" class="hover:text-slate-800">About Us</a>
+            <a href="#about" class="hover:text-slate-800">About Us</a>
             <a href="#" class="hover:text-slate-800">Privacy Policy</a>
           </div>
         </div>
-        <div
-          class="mt-8 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm"
-        >
+        <div class="mt-8 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm">
           <p>&copy; 2025 Verve. All rights reserved</p>
         </div>
       </div>
@@ -512,7 +438,7 @@
         document.body.classList.toggle("overflow-hidden");
       }
 
-      mobileMenuButton.addEventListener("click", toggleMenu);
+      if (mobileMenuButton) mobileMenuButton.addEventListener("click", toggleMenu);
       mobileMenuLinks.forEach((link) => {
         link.addEventListener("click", toggleMenu);
       });
